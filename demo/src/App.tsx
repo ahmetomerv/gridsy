@@ -91,7 +91,15 @@ export default function App() {
 
   return (
     <main style={{ marginInline: "auto", width: "90%" }}>
-      <h1>gridsy demo</h1>
+      <h1>
+        <img
+          alt=""
+          height="32"
+          src={`${import.meta.env.BASE_URL}gridsy-icon.svg`}
+          width="32"
+        />{" "}
+        gridsy demo
+      </h1>
 
       <form>
         <table>

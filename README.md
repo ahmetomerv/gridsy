@@ -1,3 +1,5 @@
+![gridsy icon](https://raw.githubusercontent.com/ahmetomerv/gridsy/main/demo/public/gridsy-icon.svg)
+
 # gridsy
 
 Render high quality, downloadable image grids from URLs, files, or blobs. Browser-first, TypeScript-first, framework-agnostic.
