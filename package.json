@@ -1,6 +1,6 @@
 {
   "name": "gridsy",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Render crisp, downloadable image grids on browser canvas.",
   "type": "module",
   "main": "./dist/index.cjs",
