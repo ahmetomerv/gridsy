@@ -162,6 +162,8 @@ If a remote image does not allow CORS, rendering may fail or export may be block
 
 ## Demo
 
+[Open the live demo](https://ahmetomerv.github.io/gridsy/)
+
 ![gridsy demo](https://raw.githubusercontent.com/ahmetomerv/gridsy/main/docs/demo.jpeg)
 
 A Vite React demo lives in `demo/`.
@@ -172,8 +174,6 @@ npm run build
 npm --prefix demo install
 npm run demo:dev
 ```
-
-The hosted demo URL will be added after the first deployment.
 
 ## Development
 
