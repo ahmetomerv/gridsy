@@ -31,11 +31,6 @@
   "keywords": [
     "canvas",
     "image-grid",
-    "image-collage",
-    "collage",
-    "png",
-    "export",
-    "browser",
     "typescript"
   ],
   "devDependencies": {
