@@ -162,6 +162,8 @@ If a remote image does not allow CORS, rendering may fail or export may be block
 
 ## Demo
 
+![gridsy demo](https://raw.githubusercontent.com/ahmetomerv/gridsy/main/docs/demo.jpeg)
+
 A Vite React demo lives in `demo/`.
 
 ```sh
