@@ -11,10 +11,15 @@ export type ImageInput =
 
 export type ImageFit = "cover" | "contain";
 
-export interface RenderImageGridOptions {
+export interface CellDimensions {
+  width: number;
+  height: number;
+}
+
+export type CellSize = number | CellDimensions;
+
+interface RenderImageGridBaseOptions {
   images: ImageInput[];
-  width?: number;
-  height?: number;
   columns?: number;
   rows?: number;
   gap?: number;
@@ -26,6 +31,42 @@ export interface RenderImageGridOptions {
   crossOrigin?: "" | "anonymous" | "use-credentials";
   fallbackColor?: string;
 }
+
+export type RenderImageGridOptions = RenderImageGridBaseOptions &
+  (
+    | {
+        cellSize: CellSize;
+        width?: never;
+        height?: never;
+      }
+    | {
+        cellSize?: never;
+        width?: number;
+        height?: number;
+      }
+  );
+
+interface GridLayoutBaseOptions {
+  itemCount: number;
+  columns?: number;
+  rows?: number;
+  gap?: number;
+  padding?: number;
+}
+
+export type GridLayoutOptions = GridLayoutBaseOptions &
+  (
+    | {
+        cellSize: CellSize;
+        width?: never;
+        height?: never;
+      }
+    | {
+        cellSize?: never;
+        width: number;
+        height: number;
+      }
+  );
 
 export interface ExportOptions {
   type?: "image/png" | "image/jpeg" | "image/webp";

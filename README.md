@@ -17,8 +17,7 @@ import { downloadCanvas, renderImageGrid } from "gridsy";
 
 const result = await renderImageGrid({
   images: ["https://example.com/one.jpg", "https://example.com/two.jpg"],
-  width: 1200,
-  height: 1200,
+  cellSize: 300,
   columns: 4,
   gap: 8,
   padding: 24,
@@ -35,6 +34,32 @@ await downloadCanvas(result.canvas, "grid.png");
 ### `renderImageGrid(options)`
 
 Creates a canvas grid from image inputs.
+
+Use `cellSize` to make the canvas fit cells of an exact size. A number creates square cells,
+while an object creates rectangular cells:
+
+```ts
+const square = await renderImageGrid({
+  images,
+  columns: 4,
+  cellSize: 300,
+  gap: 8,
+  padding: 24
+});
+
+const landscape = await renderImageGrid({
+  images,
+  columns: 4,
+  cellSize: { width: 400, height: 225 },
+  gap: 8,
+  padding: 24
+});
+```
+
+The canvas dimensions are derived from the resolved rows and columns, cell dimensions, gaps,
+and padding. `cellSize` cannot be combined with canvas `width` or `height`.
+
+To keep using a fixed canvas, omit `cellSize` and provide `width` and `height`:
 
 ```ts
 const result = await renderImageGrid({
@@ -89,8 +114,7 @@ Returns deterministic cell positions for a grid. If both `columns` and `rows` ar
 ```ts
 const layout = calculateGridLayout({
   itemCount: 10,
-  width: 1200,
-  height: 800,
+  cellSize: { width: 240, height: 160 },
   columns: 5,
   gap: 12,
   padding: 32

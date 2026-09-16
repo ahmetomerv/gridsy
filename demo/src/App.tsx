@@ -16,6 +16,7 @@ export default function App() {
   const [urlText, setUrlText] = useState(sampleImages.join("\n"));
   const [files, setFiles] = useState<File[]>([]);
   const [columns, setColumns] = useState(3);
+  const [cellSize, setCellSize] = useState(300);
   const [gap, setGap] = useState(10);
   const [padding, setPadding] = useState(24);
   const [background, setBackground] = useState("#ffffff");
@@ -43,8 +44,7 @@ export default function App() {
       try {
         const result = await renderImageGrid({
           images,
-          width: 1200,
-          height: 900,
+          cellSize,
           columns,
           gap,
           padding,
@@ -75,7 +75,7 @@ export default function App() {
     return () => {
       isActive = false;
     };
-  }, [background, columns, files, fit, gap, images, padding]);
+  }, [background, cellSize, columns, files, fit, gap, images, padding]);
 
   function handleFiles(event: ChangeEvent<HTMLInputElement>) {
     setFiles(Array.from(event.target.files ?? []));
@@ -140,6 +140,18 @@ export default function App() {
                   onChange={(event) => setGap(Number(event.target.value))}
                   type="number"
                   value={gap}
+                />
+              </td>
+              <td>
+                <label htmlFor="cell-size">Size</label>
+                <br />
+                <input
+                  id="cell-size"
+                  min="1"
+                  max="1200"
+                  onChange={(event) => setCellSize(Number(event.target.value))}
+                  type="number"
+                  value={cellSize}
                 />
               </td>
               <td>

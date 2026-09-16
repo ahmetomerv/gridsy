@@ -15,13 +15,37 @@ export async function renderImageGrid(
     throw new TypeError("images must be an array.");
   }
 
-  const width = options.width ?? DEFAULT_SIZE;
-  const height = options.height ?? DEFAULT_SIZE;
+  if (
+    options.cellSize !== undefined &&
+    (options.width !== undefined || options.height !== undefined)
+  ) {
+    throw new TypeError("cellSize cannot be combined with width or height.");
+  }
+
   const fit = options.fit ?? "cover";
   const background = options.background ?? DEFAULT_BACKGROUND;
   const fallbackColor = options.fallbackColor ?? DEFAULT_FALLBACK;
   const borderRadius = options.borderRadius ?? 0;
-  const canvas = createHiDPICanvas(width, height, options.pixelRatio);
+  const layout =
+    options.cellSize !== undefined
+      ? calculateGridLayout({
+          itemCount: options.images.length,
+          cellSize: options.cellSize,
+          columns: options.columns,
+          rows: options.rows,
+          gap: options.gap,
+          padding: options.padding
+        })
+      : calculateGridLayout({
+          itemCount: options.images.length,
+          width: options.width ?? DEFAULT_SIZE,
+          height: options.height ?? DEFAULT_SIZE,
+          columns: options.columns,
+          rows: options.rows,
+          gap: options.gap,
+          padding: options.padding
+        });
+  const canvas = createHiDPICanvas(layout.width, layout.height, options.pixelRatio);
   const context = canvas.getContext("2d");
 
   if (!context) {
@@ -29,17 +53,7 @@ export async function renderImageGrid(
   }
 
   context.fillStyle = background;
-  context.fillRect(0, 0, width, height);
-
-  const layout = calculateGridLayout({
-    itemCount: options.images.length,
-    width,
-    height,
-    columns: options.columns,
-    rows: options.rows,
-    gap: options.gap,
-    padding: options.padding
-  });
+  context.fillRect(0, 0, layout.width, layout.height);
   const loadedImages = await loadImageInputs(options.images, options.crossOrigin);
 
   for (const cell of layout.cells) {
