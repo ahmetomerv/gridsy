@@ -90,7 +90,7 @@ export default function App() {
   }
 
   return (
-    <main>
+    <main style={{ marginInline: "auto", width: "90%" }}>
       <h1>gridsy demo</h1>
 
       <form>
@@ -218,11 +218,6 @@ export default function App() {
                   </label>
                 </fieldset>
               </td>
-              <td>
-                <button onClick={handleDownload} type="button">
-                  Download PNG
-                </button>
-              </td>
             </tr>
           </tbody>
         </table>
@@ -233,8 +228,12 @@ export default function App() {
         {failedCount > 0 ? `, ${failedCount} failed` : ""}
       </p>
 
-      <section aria-label="Canvas preview">
+      <section aria-label="Canvas preview" style={{ textAlign: "center" }}>
         <div ref={canvasHostRef} />
+        <br />
+        <button onClick={handleDownload} type="button">
+          Download PNG
+        </button>
       </section>
     </main>
   );
