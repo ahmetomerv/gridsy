@@ -1,14 +1,8 @@
 import { ChangeEvent, useEffect, useMemo, useRef, useState } from "react";
 import { downloadCanvas, ImageFit, ImageInput, renderImageGrid } from "gridsy";
 
-const sampleImages = [
-  createSampleImage("#ff6b6b", "#17202a", "ONE"),
-  createSampleImage("#4ecdc4", "#102a43", "TWO"),
-  createSampleImage("#ffe66d", "#2d2a32", "THREE"),
-  createSampleImage("#7bdff2", "#1b1b3a", "FOUR"),
-  createSampleImage("#b2f7ef", "#243b53", "FIVE"),
-  createSampleImage("#f7d6e0", "#432818", "SIX")
-];
+const sampleImageUrl = "https://farm2.staticflickr.com/1853/29870511967_321daf808f_o.jpg";
+const sampleImages = Array.from({ length: 6 }, () => sampleImageUrl);
 
 export default function App() {
   const canvasHostRef = useRef<HTMLDivElement>(null);
@@ -19,7 +13,7 @@ export default function App() {
   const [cellSize, setCellSize] = useState(300);
   const [gap, setGap] = useState(10);
   const [padding, setPadding] = useState(24);
-  const [background, setBackground] = useState("#ffffff");
+  const [background, setBackground] = useState("#f3f4f6");
   const [fit, setFit] = useState<ImageFit>("cover");
   const [failedCount, setFailedCount] = useState(0);
   const [isRendering, setIsRendering] = useState(false);
@@ -222,21 +216,4 @@ export default function App() {
       </section>
     </main>
   );
-}
-
-function createSampleImage(start: string, end: string, label: string): string {
-  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="900" viewBox="0 0 1200 900">
-    <defs>
-      <linearGradient id="g" x1="0" x2="1" y1="0" y2="1">
-        <stop stop-color="${start}"/>
-        <stop offset="1" stop-color="${end}"/>
-      </linearGradient>
-    </defs>
-    <rect width="1200" height="900" fill="url(#g)"/>
-    <circle cx="930" cy="210" r="150" fill="rgba(255,255,255,0.26)"/>
-    <rect x="120" y="560" width="620" height="96" rx="48" fill="rgba(255,255,255,0.28)"/>
-    <text x="120" y="460" fill="white" font-family="Arial, sans-serif" font-size="116" font-weight="700">${label}</text>
-  </svg>`;
-
-  return `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
 }
