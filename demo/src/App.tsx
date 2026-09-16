@@ -15,8 +15,10 @@ export default function App() {
   const [padding, setPadding] = useState(24);
   const [background, setBackground] = useState("#f3f4f6");
   const [fit, setFit] = useState<ImageFit>("cover");
+  const [borderRadius, setBorderRadius] = useState(0);
   const [failedCount, setFailedCount] = useState(0);
   const [isRendering, setIsRendering] = useState(false);
+  const maxBorderRadius = cellSize / 2;
 
   const images = useMemo<ImageInput[]>(
     () => [
@@ -44,7 +46,7 @@ export default function App() {
           padding,
           background,
           fit,
-          borderRadius: 18,
+          borderRadius,
           pixelRatio: 2,
           fallbackColor: "#d1d5db",
           crossOrigin: "anonymous"
@@ -69,10 +71,16 @@ export default function App() {
     return () => {
       isActive = false;
     };
-  }, [background, cellSize, columns, files, fit, gap, images, padding]);
+  }, [background, borderRadius, cellSize, columns, files, fit, gap, images, padding]);
 
   function handleFiles(event: ChangeEvent<HTMLInputElement>) {
     setFiles(Array.from(event.target.files ?? []));
+  }
+
+  function handleCellSize(event: ChangeEvent<HTMLInputElement>) {
+    const nextCellSize = Number(event.target.value);
+    setCellSize(nextCellSize);
+    setBorderRadius((current) => Math.min(current, nextCellSize / 2));
   }
 
   async function handleDownload() {
@@ -143,10 +151,24 @@ export default function App() {
                   id="cell-size"
                   min="1"
                   max="1200"
-                  onChange={(event) => setCellSize(Number(event.target.value))}
+                  onChange={handleCellSize}
                   type="number"
                   value={cellSize}
                 />
+              </td>
+              <td>
+                <label htmlFor="border-radius">Border radius</label>
+                <br />
+                <input
+                  id="border-radius"
+                  min="0"
+                  max={maxBorderRadius}
+                  onChange={(event) => setBorderRadius(Number(event.target.value))}
+                  step="0.5"
+                  type="range"
+                  value={borderRadius}
+                />
+                <output htmlFor="border-radius">{borderRadius}px</output>
               </td>
               <td>
                 <label htmlFor="padding">Padding</label>

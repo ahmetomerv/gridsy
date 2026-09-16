@@ -1,6 +1,6 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 
-import { getObjectFitRect } from "../src/draw";
+import { drawPlaceholder, getObjectFitRect } from "../src/draw";
 import { calculateGridLayout } from "../src/layout";
 import type { GridLayoutOptions } from "../src/types";
 
@@ -126,3 +126,46 @@ describe("getObjectFitRect", () => {
     });
   });
 });
+
+describe("border radius", () => {
+  it("defaults to square corners", () => {
+    const context = createDrawingContext();
+
+    drawPlaceholder(
+      context,
+      { index: 0, x: 0, y: 0, width: 100, height: 100 },
+      "#ffffff"
+    );
+
+    expect(context.rect).toHaveBeenCalledWith(0, 0, 100, 100);
+    expect(context.moveTo).not.toHaveBeenCalled();
+  });
+
+  it("clamps the radius to half the shorter cell side", () => {
+    const context = createDrawingContext();
+
+    drawPlaceholder(
+      context,
+      { index: 0, x: 0, y: 0, width: 100, height: 100 },
+      "#ffffff",
+      200
+    );
+
+    expect(context.moveTo).toHaveBeenCalledWith(50, 0);
+  });
+});
+
+function createDrawingContext(): CanvasRenderingContext2D {
+  return {
+    save: vi.fn(),
+    restore: vi.fn(),
+    beginPath: vi.fn(),
+    rect: vi.fn(),
+    moveTo: vi.fn(),
+    lineTo: vi.fn(),
+    quadraticCurveTo: vi.fn(),
+    closePath: vi.fn(),
+    clip: vi.fn(),
+    fillRect: vi.fn()
+  } as unknown as CanvasRenderingContext2D;
+}

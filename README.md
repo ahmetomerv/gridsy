@@ -139,6 +139,21 @@ await downloadCanvas(canvas, "grid.png");
 
 `contain` keeps the full image visible and centers it inside the cell, leaving the grid background visible around it.
 
+## Border Radius
+
+`borderRadius` controls the corner radius of every image and fallback cell in logical pixels. It defaults to `0`. Values larger than half the shorter cell side are clamped automatically. For a square cell, setting the radius to half the cell size creates a circle:
+
+```ts
+await renderImageGrid({
+  images,
+  columns: 3,
+  cellSize: 300,
+  borderRadius: 150
+});
+```
+
+Rectangular cells become fully rounded capsules at their maximum radius rather than circles.
+
 ## Browser and CORS Notes
 
 Remote images must be same-origin, served with permissive CORS headers, or proxied/fetched in a way that avoids canvas tainting.

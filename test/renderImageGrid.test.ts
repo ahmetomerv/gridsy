@@ -50,6 +50,16 @@ describe("renderImageGrid", () => {
       "cellSize cannot be combined with width or height"
     );
   });
+
+  it("rejects an invalid border radius", async () => {
+    await expect(
+      renderImageGrid({
+        images: [],
+        cellSize: 100,
+        borderRadius: -1
+      })
+    ).rejects.toThrow("borderRadius must be a non-negative number");
+  });
 });
 
 describe("export helpers", () => {

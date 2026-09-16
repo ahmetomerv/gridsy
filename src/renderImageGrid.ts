@@ -25,7 +25,7 @@ export async function renderImageGrid(
   const fit = options.fit ?? "cover";
   const background = options.background ?? DEFAULT_BACKGROUND;
   const fallbackColor = options.fallbackColor ?? DEFAULT_FALLBACK;
-  const borderRadius = options.borderRadius ?? 0;
+  const borderRadius = nonNegativeNumber(options.borderRadius ?? 0, "borderRadius");
   const layout =
     options.cellSize !== undefined
       ? calculateGridLayout({
@@ -110,4 +110,12 @@ export function createHiDPICanvas(
 
 function getDefaultPixelRatio(): number {
   return typeof window === "undefined" ? 1 : window.devicePixelRatio || 1;
+}
+
+function nonNegativeNumber(value: number, name: string): number {
+  if (!Number.isFinite(value) || value < 0) {
+    throw new RangeError(`${name} must be a non-negative number.`);
+  }
+
+  return value;
 }
