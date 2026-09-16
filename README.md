@@ -1,6 +1,6 @@
 # gridsy
 
-Render crisp, downloadable image grids from URLs, files, or blobs. Browser-first, TypeScript-first, framework-agnostic.
+Render high quality, downloadable image grids from URLs, files, or blobs. Browser-first, TypeScript-first, framework-agnostic.
 
 `gridsy` turns image inputs into a high-DPI browser canvas and gives you small export helpers for PNG, JPEG, and WebP. It is useful for social cards, moodboards, portfolio grids, product previews, contact sheets, collection posters, dataset previews, and API result snapshots.
 

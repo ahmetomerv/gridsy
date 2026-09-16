@@ -1,7 +1,7 @@
 {
   "name": "gridsy",
   "version": "0.2.0",
-  "description": "Render crisp, downloadable image grids on browser canvas.",
+  "description": "A TypeScript library for rendering and exporting high-DPI image grids.",
   "type": "module",
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
