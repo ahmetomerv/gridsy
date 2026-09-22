@@ -53,6 +53,7 @@ export default defineConfig({
     logo: "/gridsy-icon.svg",
     nav: [
       { text: "Guide", link: "/guide/getting-started" },
+      { text: "Examples", link: "/examples/community-mosaics" },
       { text: "API", link: "/api/" },
       { text: "Demo", link: "/demo/", target: "_self" }
     ],
@@ -64,6 +65,10 @@ export default defineConfig({
           { text: "Layouts", link: "/guide/layouts" },
           { text: "Images and exports", link: "/guide/images-and-exports" }
         ]
+      },
+      {
+        text: "Examples",
+        items: [{ text: "Community mosaics", link: "/examples/community-mosaics" }]
       },
       {
         text: "Reference",
