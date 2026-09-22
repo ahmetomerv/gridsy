@@ -4,6 +4,8 @@
 
 Render high quality, downloadable image grids from URLs, files, or blobs. Browser-first, TypeScript-first, framework-agnostic.
 
+[Documentation](https://ahmetomerv.github.io/gridsy/) · [Live demo](https://ahmetomerv.github.io/gridsy/demo/)
+
 `gridsy` turns image inputs into a high-DPI browser canvas and gives you small export helpers for PNG, JPEG, and WebP. It is useful for social cards, moodboards, portfolio grids, product previews, contact sheets, collection posters, dataset previews, and API result snapshots.
 
 ## Install
@@ -164,7 +166,7 @@ If a remote image does not allow CORS, rendering may fail or export may be block
 
 ## Demo
 
-[Open the live demo](https://ahmetomerv.github.io/gridsy/)
+[Open the live demo](https://ahmetomerv.github.io/gridsy/demo/)
 
 ![gridsy demo](https://raw.githubusercontent.com/ahmetomerv/gridsy/main/docs/demo.jpeg)
 
@@ -186,6 +188,8 @@ npm test
 npm run lint
 npm run build
 npm run verify
+npm run docs:dev
+npm run site:build
 ```
 
 The core library is independent from React. The demo imports the library source during local development through a Vite alias.

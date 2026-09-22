@@ -3,5 +3,8 @@ dist
 coverage
 demo/node_modules
 demo/dist
+docs/.generated-public
+docs/.vitepress/cache
+docs/.vitepress/dist
 .DS_Store
 *.log

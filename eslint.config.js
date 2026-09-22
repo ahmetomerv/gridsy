@@ -3,7 +3,14 @@ import tseslint from "typescript-eslint";
 
 export default tseslint.config(
   {
-    ignores: ["dist", "coverage", "demo/dist", "node_modules"]
+    ignores: [
+      "dist",
+      "coverage",
+      "**/dist/**",
+      "docs/.generated-public/**",
+      "docs/.vitepress/cache/**",
+      "node_modules"
+    ]
   },
   js.configs.recommended,
   ...tseslint.configs.recommended,

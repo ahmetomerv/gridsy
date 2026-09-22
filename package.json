@@ -26,7 +26,12 @@
     "format:check": "prettier --check .",
     "verify": "npm run typecheck && npm run lint && npm test && npm run format:check && npm run build",
     "demo:dev": "npm --prefix demo run dev",
-    "demo:build": "npm --prefix demo run build"
+    "demo:build": "npm --prefix demo run build",
+    "docs:assets": "node scripts/prepare-site-assets.mjs",
+    "docs:dev": "npm run demo:build && npm run docs:assets && vitepress dev docs",
+    "docs:build": "npm run demo:build && npm run docs:assets && vitepress build docs",
+    "docs:preview": "vitepress preview docs",
+    "site:build": "npm run docs:build"
   },
   "keywords": [
     "canvas",
@@ -41,6 +46,7 @@
     "tsup": "^8.5.0",
     "typescript": "^5.9.2",
     "typescript-eslint": "^8.43.0",
+    "vitepress": "1.6.4",
     "vitest": "^5.0.1"
   },
   "repository": {
@@ -50,5 +56,5 @@
   "bugs": {
     "url": "https://github.com/ahmetomerv/gridsy/issues"
   },
-  "homepage": "https://github.com/ahmetomerv/gridsy#readme"
+  "homepage": "https://ahmetomerv.github.io/gridsy/"
 }

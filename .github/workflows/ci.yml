@@ -27,5 +27,5 @@ jobs:
       - name: Install demo
         run: npm --prefix demo ci
 
-      - name: Build demo
-        run: npm run demo:build
+      - name: Build documentation and demo
+        run: npm run site:build
