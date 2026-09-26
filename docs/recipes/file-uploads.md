@@ -1,6 +1,16 @@
+<script setup>
+import GeneratedGrid from "../.vitepress/theme/components/GeneratedGrid.vue";
+</script>
+
 # File uploads
 
 Build a grid from `<input type="file">` selections. `File` values are valid `ImageInput`s, so no extra conversion is required.
+
+The preview below uses the same layout options as the snippet, with locally generated stand-ins for uploaded photos.
+
+<ClientOnly>
+  <GeneratedGrid preset="file-uploads" />
+</ClientOnly>
 
 ```ts
 import { downloadCanvas, renderImageGrid } from "gridsy";

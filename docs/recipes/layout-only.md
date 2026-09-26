@@ -1,6 +1,16 @@
+<script setup>
+import GeneratedGrid from "../.vitepress/theme/components/GeneratedGrid.vue";
+</script>
+
 # Layout-only math
 
 Use `calculateGridLayout` when you need deterministic cell positions without loading images—for example to size a DOM grid, reserve space, or drive a custom renderer.
+
+The previews below draw the returned cell rectangles on a HiDPI canvas so you can see the layout the math produces.
+
+<ClientOnly>
+  <GeneratedGrid preset="layout-cell-sized" />
+</ClientOnly>
 
 ```ts
 import { calculateGridLayout } from "gridsy";
@@ -19,6 +29,10 @@ console.log(layout.cells[0]); // { index, x, y, width, height }
 
 ## Fixed canvas
 
+<ClientOnly>
+  <GeneratedGrid preset="layout-fixed" />
+</ClientOnly>
+
 ```ts
 const layout = calculateGridLayout({
   itemCount: 8,
@@ -36,6 +50,10 @@ const layout = calculateGridLayout({
 With both `columns` and `rows`, capacity is `columns * rows`. Extra items do not get cells.
 
 ## Align DOM to the same grid
+
+<ClientOnly>
+  <GeneratedGrid preset="layout-dom" />
+</ClientOnly>
 
 ```ts
 const layout = calculateGridLayout({

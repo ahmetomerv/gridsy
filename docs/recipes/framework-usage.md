@@ -1,6 +1,16 @@
+<script setup>
+import GeneratedGrid from "../.vitepress/theme/components/GeneratedGrid.vue";
+</script>
+
 # Framework usage
 
 Gridsy is framework-agnostic. Call it from client-only lifecycle hooks, mount `result.canvas` into the DOM, and cancel stale renders when inputs change.
+
+The React, Vue, and plain JavaScript snippets below all mount a canvas like this:
+
+<ClientOnly>
+  <GeneratedGrid preset="framework-usage" />
+</ClientOnly>
 
 ## React
 
