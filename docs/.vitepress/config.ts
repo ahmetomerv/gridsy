@@ -23,7 +23,7 @@ function rewriteDemoIndex(url: string | undefined): string | undefined {
 export default defineConfig({
   base,
   title: "gridsy",
-  description: "Render and export high-DPI image grids in the browser.",
+  description: "Typed, browser-first image grids with canvas export helpers.",
   cleanUrls: true,
   head: [
     ["link", { rel: "icon", type: "image/svg+xml", href: `${base}gridsy-icon.svg` }],
@@ -53,7 +53,7 @@ export default defineConfig({
     logo: "/gridsy-icon.svg",
     nav: [
       { text: "Guide", link: "/guide/getting-started" },
-      { text: "Examples", link: "/examples/community-mosaics" },
+      { text: "Recipes", link: "/recipes/file-uploads" },
       { text: "API", link: "/api/" },
       { text: "Demo", link: "/demo/", target: "_self" }
     ],
@@ -63,17 +63,25 @@ export default defineConfig({
         items: [
           { text: "Getting started", link: "/guide/getting-started" },
           { text: "Layouts", link: "/guide/layouts" },
-          { text: "Images and exports", link: "/guide/images-and-exports" }
+          { text: "Images and exports", link: "/guide/images-and-exports" },
+          { text: "Behavior and errors", link: "/guide/behavior-and-errors" },
+          { text: "Custom rendering", link: "/guide/custom-rendering" }
         ]
       },
       {
-        text: "Examples",
-        items: [{ text: "Community mosaics", link: "/examples/community-mosaics" }]
+        text: "Recipes",
+        items: [
+          { text: "File uploads", link: "/recipes/file-uploads" },
+          { text: "Framework usage", link: "/recipes/framework-usage" },
+          { text: "Layout-only math", link: "/recipes/layout-only" },
+          { text: "Precomposed cells", link: "/recipes/precomposed-cells" }
+        ]
       },
       {
         text: "Reference",
         items: [
           { text: "API", link: "/api/" },
+          { text: "Changelog", link: "/changelog" },
           { text: "Development", link: "/development" }
         ]
       }

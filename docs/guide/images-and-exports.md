@@ -32,6 +32,8 @@ for (const failure of result.failed) {
 }
 ```
 
+See [Behavior and errors](./behavior-and-errors) for the full soft-fail versus throw contract.
+
 ## Remote images and CORS
 
 Remote images must be same-origin or served with CORS headers that permit your site to read them. Otherwise the browser may reject the load or mark the canvas as tainted, which prevents export.
@@ -46,7 +48,12 @@ await renderImageGrid({
 });
 ```
 
-Setting `crossOrigin` cannot override a server that does not send compatible CORS headers.
+Checklist:
+
+1. Prefer same-origin URLs, blobs, or files when you control the source.
+2. Pass `crossOrigin: "anonymous"` for remote URLs that send CORS headers.
+3. Setting `crossOrigin` cannot override a server that omits compatible headers.
+4. If export fails with a tainted-canvas error, fix CORS or proxy/fetch the image into a `Blob` before rendering.
 
 ## Export formats
 
@@ -59,3 +66,5 @@ const webpUrl = result.toDataUrl({ type: "image/webp", quality: 0.9 });
 ```
 
 `quality` is relevant to lossy formats such as JPEG and WebP and is passed to the browser's Canvas export API.
+
+Standalone helpers (`canvasToBlob`, `canvasToDataUrl`, `downloadCanvas`) accept the same `ExportOptions` and work on any canvas, including ones you build with the [custom rendering](./custom-rendering) helpers.

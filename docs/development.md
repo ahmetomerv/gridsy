@@ -19,6 +19,8 @@ npm run build
 npm run verify
 ```
 
+Tests run under Vitest with happy-dom. `test/setup.ts` stubs `HTMLCanvasElement` drawing/export APIs and a mock `Image` implementation (URLs containing `"fail"` reject). Prefer asserting on layout results, `result.failed`, and export side effects over pixel buffers unless you use a real browser.
+
 ## Run the documentation
 
 ```sh
@@ -40,3 +42,7 @@ npm run site:build
 ```
 
 This builds VitePress at the site root and places the production demo under `docs/.vitepress/dist/demo/`, matching the GitHub Pages URL structure.
+
+## Scope
+
+Keep the core package small, typed, browser-first, and framework-agnostic. Prefer documenting composition recipes over adding framework-specific packages.
