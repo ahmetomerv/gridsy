@@ -1,12 +1,21 @@
 <script setup lang="ts">
 import { onBeforeUnmount, onMounted, ref } from "vue";
 import {
+  calculateGridLayout,
+  createHiDPICanvas,
+  drawPlaceholder,
   renderImageGrid,
   type ImageInput,
   type RenderImageGridOptions
 } from "../../../../src/index";
 
-type PresetName = "community-contributors" | "community-event";
+type PresetName =
+  | "community-contributors"
+  | "community-event"
+  | "file-uploads"
+  | "layout-cell-sized"
+  | "layout-fixed"
+  | "layout-dom";
 
 const props = defineProps<{
   preset: PresetName;
@@ -43,15 +52,26 @@ const eventPeople = [
   ["Vic Stone", "Organizer", "VS", "#16a34a"]
 ] as const;
 
+const uploadSeeds = [
+  "gridsy-upload-1",
+  "gridsy-upload-2",
+  "gridsy-upload-3",
+  "gridsy-upload-4",
+  "gridsy-upload-5",
+  "gridsy-upload-6",
+  "gridsy-upload-7",
+  "gridsy-upload-8"
+] as const;
+
 onMounted(async () => {
   try {
-    const result = await renderImageGrid(createPreset(props.preset));
+    const canvas = await renderPreset(props.preset);
 
     if (!isActive) {
       return;
     }
 
-    host.value?.replaceChildren(result.canvas);
+    host.value?.replaceChildren(canvas);
   } catch (error) {
     errorMessage.value =
       error instanceof Error ? error.message : "Could not render grid.";
@@ -62,7 +82,50 @@ onBeforeUnmount(() => {
   isActive = false;
 });
 
-function createPreset(preset: PresetName): RenderImageGridOptions {
+async function renderPreset(preset: PresetName): Promise<HTMLCanvasElement> {
+  switch (preset) {
+    case "layout-cell-sized":
+      return renderLayoutPreview({
+        itemCount: 10,
+        cellSize: { width: 120, height: 80 },
+        columns: 5,
+        gap: 12,
+        padding: 32,
+        background: "#ffffff",
+        label: (index) => String(index)
+      });
+    case "layout-fixed":
+      return renderLayoutPreview({
+        itemCount: 8,
+        width: 600,
+        height: 315,
+        columns: 4,
+        rows: 2,
+        gap: 8,
+        padding: 24,
+        background: "#f8fafc",
+        label: (index) => String(index)
+      });
+    case "layout-dom":
+      return renderLayoutPreview({
+        itemCount: 8,
+        cellSize: 80,
+        columns: 4,
+        gap: 8,
+        padding: 16,
+        background: "#ffffff",
+        label: (index) => `Item ${index + 1}`
+      });
+    default: {
+      const result = await renderImageGrid(createImagePreset(preset));
+      return result.canvas;
+    }
+  }
+}
+
+function createImagePreset(
+  preset: Exclude<PresetName, "layout-cell-sized" | "layout-fixed" | "layout-dom">
+): RenderImageGridOptions {
   switch (preset) {
     case "community-contributors":
       return {
@@ -90,7 +153,78 @@ function createPreset(preset: PresetName): RenderImageGridOptions {
         borderRadius: 14,
         pixelRatio: 2
       };
+    case "file-uploads":
+      return {
+        images: uploadSeeds.map((seed) => `https://picsum.photos/seed/${seed}/280/280`),
+        columns: 4,
+        cellSize: 140,
+        gap: 10,
+        padding: 20,
+        background: "#f3f4f6",
+        fit: "cover",
+        borderRadius: 8,
+        pixelRatio: 2,
+        crossOrigin: "anonymous"
+      };
   }
+}
+
+function renderLayoutPreview(options: {
+  itemCount: number;
+  cellSize?: number | { width: number; height: number };
+  width?: number;
+  height?: number;
+  columns?: number;
+  rows?: number;
+  gap?: number;
+  padding?: number;
+  background: string;
+  label: (index: number) => string;
+}): HTMLCanvasElement {
+  const layout =
+    options.cellSize !== undefined
+      ? calculateGridLayout({
+          itemCount: options.itemCount,
+          cellSize: options.cellSize,
+          columns: options.columns,
+          rows: options.rows,
+          gap: options.gap,
+          padding: options.padding
+        })
+      : calculateGridLayout({
+          itemCount: options.itemCount,
+          width: options.width!,
+          height: options.height!,
+          columns: options.columns,
+          rows: options.rows,
+          gap: options.gap,
+          padding: options.padding
+        });
+
+  const canvas = createHiDPICanvas(layout.width, layout.height, 2);
+  const context = canvas.getContext("2d");
+
+  if (!context) {
+    throw new Error("Could not create a 2D canvas context.");
+  }
+
+  context.fillStyle = options.background;
+  context.fillRect(0, 0, layout.width, layout.height);
+
+  for (const cell of layout.cells) {
+    drawPlaceholder(context, cell, "#e2e8f0", 8);
+    context.fillStyle = "#334155";
+    context.font = "600 14px ui-sans-serif, system-ui, sans-serif";
+    context.textAlign = "center";
+    context.textBaseline = "middle";
+    context.fillText(
+      options.label(cell.index),
+      cell.x + cell.width / 2,
+      cell.y + cell.height / 2
+    );
+  }
+
+  return canvas;
 }
 
 function avatarImage(name: string, initials: string, color: string): ImageInput {

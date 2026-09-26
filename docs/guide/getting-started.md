@@ -53,5 +53,7 @@ await downloadCanvas(result.canvas, "grid.webp", {
 
 - Learn how [automatic, cell-sized, and fixed layouts work](./layouts).
 - Review supported [image inputs, failure handling, CORS, and exports](./images-and-exports).
-- Explore the [community mosaic examples](/examples/community-mosaics).
+- Read the [behavior and error contract](./behavior-and-errors).
+- Compose a [custom renderer](./custom-rendering) from layout and draw helpers.
+- Browse [recipes](/recipes/file-uploads) for uploads, layout math, and precomposed cells.
 - See every public function and type in the [API reference](/api/).

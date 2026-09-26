@@ -10,24 +10,24 @@ function renderImageGrid(options: RenderImageGridOptions): Promise<RenderedImage
 
 Renders image inputs into a new high-DPI canvas.
 
-| Option          | Type                                     | Default                   | Description                                                                    |
-| --------------- | ---------------------------------------- | ------------------------- | ------------------------------------------------------------------------------ |
-| `images`        | `ImageInput[]`                           | required                  | Images to load and render.                                                     |
-| `cellSize`      | `number \| { width; height }`            | —                         | Exact logical size of every cell. Cannot be combined with `width` or `height`. |
-| `width`         | `number`                                 | `1200`                    | Logical canvas width when `cellSize` is omitted.                               |
-| `height`        | `number`                                 | `1200`                    | Logical canvas height when `cellSize` is omitted.                              |
-| `columns`       | `number`                                 | automatic                 | Positive integer column count.                                                 |
-| `rows`          | `number`                                 | automatic                 | Positive integer row count.                                                    |
-| `gap`           | `number`                                 | `0`                       | Non-negative space between cells.                                              |
-| `padding`       | `number`                                 | `0`                       | Non-negative space around the grid.                                            |
-| `background`    | `string`                                 | `#ffffff`                 | Canvas background fill.                                                        |
-| `fit`           | `"cover" \| "contain"`                   | `"cover"`                 | Image fit inside each cell.                                                    |
-| `pixelRatio`    | `number`                                 | `window.devicePixelRatio` | Backing-canvas scale, clamped to at least 1.                                   |
-| `borderRadius`  | `number`                                 | `0`                       | Cell corner radius in logical pixels.                                          |
-| `crossOrigin`   | `"" \| "anonymous" \| "use-credentials"` | —                         | `crossOrigin` assigned to URL-backed images.                                   |
-| `fallbackColor` | `string`                                 | `#e5e7eb`                 | Fill used when an image fails.                                                 |
+`RenderImageGridOptions` is a discriminated union: either provide `cellSize`, or omit it and optionally set `width` / `height`. Combining `cellSize` with canvas dimensions is a type error and a runtime `TypeError`.
 
-The result contains:
+| Option          | Type                                     | Default                   | Description                                                                   |
+| --------------- | ---------------------------------------- | ------------------------- | ----------------------------------------------------------------------------- |
+| `images`        | `ImageInput[]`                           | required                  | Images to load and render.                                                    |
+| `cellSize`      | `CellSize`                               | —                         | Exact logical size of every cell. Mutually exclusive with `width` / `height`. |
+| `width`         | `number`                                 | `1200`                    | Logical canvas width when `cellSize` is omitted.                              |
+| `height`        | `number`                                 | `1200`                    | Logical canvas height when `cellSize` is omitted.                             |
+| `columns`       | `number`                                 | automatic                 | Positive integer column count.                                                |
+| `rows`          | `number`                                 | automatic                 | Positive integer row count.                                                   |
+| `gap`           | `number`                                 | `0`                       | Non-negative space between cells.                                             |
+| `padding`       | `number`                                 | `0`                       | Non-negative space around the grid.                                           |
+| `background`    | `string`                                 | `#ffffff`                 | Canvas background fill.                                                       |
+| `fit`           | `ImageFit`                               | `"cover"`                 | Image fit inside each cell.                                                   |
+| `pixelRatio`    | `number`                                 | `window.devicePixelRatio` | Backing-canvas scale, clamped to at least 1.                                  |
+| `borderRadius`  | `number`                                 | `0`                       | Cell corner radius in logical pixels.                                         |
+| `crossOrigin`   | `"" \| "anonymous" \| "use-credentials"` | —                         | Assigned to URL-backed images before load.                                    |
+| `fallbackColor` | `string`                                 | `#e5e7eb`                 | Fill used when an image fails.                                                |
 
 ```ts
 interface RenderedImageGrid {
@@ -44,7 +44,18 @@ interface RenderedImageGrid {
 function calculateGridLayout(options: GridLayoutOptions): GridLayout;
 ```
 
-Calculates canvas dimensions and deterministic cell positions without loading or drawing images. It uses the same `cellSize` versus fixed `width` and `height` rules as `renderImageGrid()`.
+Calculates canvas dimensions and deterministic cell positions without loading or drawing images. Uses the same `cellSize` versus fixed `width` / `height` rules as `renderImageGrid()`, except fixed mode requires both `width` and `height`.
+
+| Option      | Type       | Default                | Description                                                  |
+| ----------- | ---------- | ---------------------- | ------------------------------------------------------------ |
+| `itemCount` | `number`   | required               | Number of items to place (floored, minimum 0).               |
+| `cellSize`  | `CellSize` | —                      | Exact cell size. Mutually exclusive with `width` / `height`. |
+| `width`     | `number`   | required in fixed mode | Logical canvas width.                                        |
+| `height`    | `number`   | required in fixed mode | Logical canvas height.                                       |
+| `columns`   | `number`   | automatic              | Positive integer column count.                               |
+| `rows`      | `number`   | automatic              | Positive integer row count.                                  |
+| `gap`       | `number`   | `0`                    | Non-negative gap between cells.                              |
+| `padding`   | `number`   | `0`                    | Non-negative padding around the grid.                        |
 
 ```ts
 interface GridLayout {
@@ -66,9 +77,25 @@ interface GridCell {
 }
 ```
 
+`cells.length` is `min(itemCount, columns * rows)`.
+
 ## `createHiDPICanvas(width, height, pixelRatio?)`
 
-Creates an `HTMLCanvasElement` with scaled backing dimensions and the requested logical CSS dimensions. The returned 2D context is transformed so drawing coordinates stay in logical pixels.
+```ts
+function createHiDPICanvas(
+  width: number,
+  height: number,
+  pixelRatio?: number
+): HTMLCanvasElement;
+```
+
+Creates an `HTMLCanvasElement` with:
+
+- CSS size set to the logical `width` × `height`
+- Backing store scaled by `max(1, pixelRatio)` (default `window.devicePixelRatio` or `1`)
+- 2D context transform set so drawing stays in logical pixels
+
+Requires a browser-like `document`. Throws if dimensions are not positive finite numbers.
 
 ## Export helpers
 
@@ -91,9 +118,11 @@ interface ExportOptions {
 }
 ```
 
+Defaults: `type: "image/png"`. `downloadCanvas` creates an object URL, clicks a temporary anchor, then revokes the URL.
+
 ## Drawing helpers
 
-These lower-level helpers are available when you want to compose your own canvas renderer:
+Public composition primitives for custom renderers:
 
 ```ts
 function drawImageInCell(
@@ -122,6 +151,8 @@ function getObjectFitRect(
 ): ObjectFitRect;
 ```
 
+`borderRadius` is clamped to half the shorter cell side. See [Custom rendering](/guide/custom-rendering).
+
 ## Public types
 
 ```ts
@@ -137,7 +168,23 @@ type ImageInput =
     };
 
 type ImageFit = "cover" | "contain";
-type CellSize = number | { width: number; height: number };
+type CellSize = number | CellDimensions;
+
+interface CellDimensions {
+  width: number;
+  height: number;
+}
+
+interface ObjectFitRect {
+  sx: number;
+  sy: number;
+  sw: number;
+  sh: number;
+  dx: number;
+  dy: number;
+  dw: number;
+  dh: number;
+}
 ```
 
-The package also exports `CellDimensions`, `ExportOptions`, `GridCell`, `GridLayout`, `GridLayoutOptions`, `ObjectFitRect`, `RenderedImageGrid`, and `RenderImageGridOptions`.
+Also exported: `ExportOptions`, `GridCell`, `GridLayout`, `GridLayoutOptions`, `RenderedImageGrid`, `RenderImageGridOptions`.

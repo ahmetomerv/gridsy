@@ -3,12 +3,15 @@ layout: home
 
 hero:
   name: gridsy
-  text: High-DPI image grids for the browser
-  tagline: Turn URLs, files, blobs, and image elements into downloadable canvas grids with a small, typed API.
+  text: Typed image grids for the browser
+  tagline: A small, framework-agnostic TypeScript API that loads image inputs, lays out a high-DPI canvas, and exports PNG, JPEG, or WebP.
   actions:
     - theme: brand
       text: Get started
       link: /guide/getting-started
+    - theme: alt
+      text: API reference
+      link: /api/
     - theme: alt
       text: Open the demo
       link: /demo/
@@ -16,11 +19,11 @@ hero:
 
 features:
   - title: Browser-first
-    details: Render directly to an HTML canvas without a server-side image pipeline.
-  - title: Framework-agnostic
-    details: Use the same TypeScript API from React, Vue, Svelte, or plain JavaScript.
+    details: Render directly to an HTML canvas. No server-side image pipeline required.
+  - title: Composable primitives
+    details: Use renderImageGrid end-to-end, or compose layout, HiDPI canvas, and draw helpers yourself.
   - title: Export-ready
-    details: Create PNG, JPEG, or WebP blobs, data URLs, and downloads.
+    details: Create PNG, JPEG, or WebP blobs, data URLs, and downloads from the same canvas.
 ---
 
 ## A grid in a few lines
