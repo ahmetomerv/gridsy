@@ -4,7 +4,9 @@ import GeneratedGrid from "../.vitepress/theme/components/GeneratedGrid.vue";
 
 # File uploads
 
-Build a grid from `<input type="file">` selections. `File` values are valid `ImageInput`s, so no extra conversion is required.
+After a user picks photos, you might keep the interactive picker as normal DOM thumbnails, then turn that same `File` list into one downloadable contact sheet—for example to save, share, or attach as a single PNG.
+
+`File` values are valid `ImageInput`s, so no extra conversion is required.
 
 <ClientOnly>
   <GeneratedGrid preset="file-uploads" />
