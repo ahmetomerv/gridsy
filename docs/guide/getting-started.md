@@ -55,5 +55,5 @@ await downloadCanvas(result.canvas, "grid.webp", {
 - Review supported [image inputs, failure handling, CORS, and exports](./images-and-exports).
 - Read the [behavior and error contract](./behavior-and-errors).
 - Compose a [custom renderer](./custom-rendering) from layout and draw helpers.
-- Browse [recipes](/recipes/file-uploads) for uploads, frameworks, and precomposed cells.
+- Browse [recipes](/recipes/file-uploads) for uploads, layout math, and precomposed cells.
 - See every public function and type in the [API reference](/api/).

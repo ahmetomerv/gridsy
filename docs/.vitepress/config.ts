@@ -72,7 +72,6 @@ export default defineConfig({
         text: "Recipes",
         items: [
           { text: "File uploads", link: "/recipes/file-uploads" },
-          { text: "Framework usage", link: "/recipes/framework-usage" },
           { text: "Layout-only math", link: "/recipes/layout-only" },
           { text: "Precomposed cells", link: "/recipes/precomposed-cells" }
         ]

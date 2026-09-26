@@ -20,4 +20,4 @@ These stay optional and library-shaped—not product templates:
 - Narrower typed load errors instead of `unknown` in `failed`
 - Small overlay helpers (for example captions) as draw utilities, not layout templates
 
-A React wrapper is intentionally deferred; compose from client lifecycle hooks instead ([framework usage](/recipes/framework-usage)).
+A React wrapper is intentionally deferred; keep integrations as thin client lifecycle calls around the core API.

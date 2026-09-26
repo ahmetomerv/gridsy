@@ -13,7 +13,6 @@ type PresetName =
   | "community-contributors"
   | "community-event"
   | "file-uploads"
-  | "framework-usage"
   | "layout-cell-sized"
   | "layout-fixed"
   | "layout-dom";
@@ -53,15 +52,15 @@ const eventPeople = [
   ["Vic Stone", "Organizer", "VS", "#16a34a"]
 ] as const;
 
-const photoColors = [
-  "#0f766e",
-  "#1d4ed8",
-  "#b45309",
-  "#be123c",
-  "#6d28d9",
-  "#047857",
-  "#0369a1",
-  "#c2410c"
+const uploadSeeds = [
+  "gridsy-upload-1",
+  "gridsy-upload-2",
+  "gridsy-upload-3",
+  "gridsy-upload-4",
+  "gridsy-upload-5",
+  "gridsy-upload-6",
+  "gridsy-upload-7",
+  "gridsy-upload-8"
 ] as const;
 
 onMounted(async () => {
@@ -156,9 +155,7 @@ function createImagePreset(
       };
     case "file-uploads":
       return {
-        images: photoColors.map((color, index) =>
-          photoTileImage(`IMG_${String(index + 1).padStart(2, "0")}`, color)
-        ),
+        images: uploadSeeds.map((seed) => `https://picsum.photos/seed/${seed}/280/280`),
         columns: 4,
         cellSize: 140,
         gap: 10,
@@ -166,21 +163,8 @@ function createImagePreset(
         background: "#f3f4f6",
         fit: "cover",
         borderRadius: 8,
-        pixelRatio: 2
-      };
-    case "framework-usage":
-      return {
-        images: photoColors
-          .slice(0, 6)
-          .map((color, index) => photoTileImage(`Photo ${index + 1}`, color)),
-        columns: 3,
-        cellSize: 120,
-        gap: 8,
-        padding: 16,
-        background: "#ffffff",
-        fit: "cover",
-        borderRadius: 10,
-        pixelRatio: 2
+        pixelRatio: 2,
+        crossOrigin: "anonymous"
       };
   }
 }
@@ -241,23 +225,6 @@ function renderLayoutPreview(options: {
   }
 
   return canvas;
-}
-
-function photoTileImage(label: string, color: string): ImageInput {
-  return svgDataUrl(`
-    <svg xmlns="http://www.w3.org/2000/svg" width="280" height="280" viewBox="0 0 280 280">
-      <defs>
-        <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0%" stop-color="${color}"/>
-          <stop offset="100%" stop-color="#0f172a" stop-opacity=".35"/>
-        </linearGradient>
-      </defs>
-      <rect width="280" height="280" fill="url(#g)"/>
-      <circle cx="96" cy="88" r="28" fill="#fff" fill-opacity=".2"/>
-      <path d="M28 214 L104 138 L152 186 L196 142 L252 214 Z" fill="#fff" fill-opacity=".22"/>
-      <text x="24" y="252" font-family="ui-sans-serif, system-ui, sans-serif" font-size="22" font-weight="700" fill="#fff">${escapeXml(label)}</text>
-    </svg>
-  `);
 }
 
 function avatarImage(name: string, initials: string, color: string): ImageInput {
