@@ -6,8 +6,6 @@ import GeneratedGrid from "../.vitepress/theme/components/GeneratedGrid.vue";
 
 Build a grid from `<input type="file">` selections. `File` values are valid `ImageInput`s, so no extra conversion is required.
 
-The preview below uses the same layout options as the snippet. Images come from [Lorem Picsum](https://picsum.photos/) seeded URLs (`/seed/{seed}/…`) so each cell stays unique and stable across reloads.
-
 <ClientOnly>
   <GeneratedGrid preset="file-uploads" />
 </ClientOnly>
